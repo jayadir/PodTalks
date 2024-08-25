@@ -1,0 +1,12 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+
+}
+.cardItem{
+    margin:auto ;
+    /* top: 50%; */
+    margin-top: 7rem;
+}
