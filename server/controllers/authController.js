@@ -48,8 +48,8 @@ exports.sendOtp = async (req, res) => {
     };
     const strdata = JSON.stringify(data);
     const hashdata = hash.hashData(strdata);
-    await otpService.sendOtp(mobile, otp);
-    res.status(200).json({ hashdata, expiry, mobile });
+    // await otpService.sendOtp(mobile, otp);
+    res.status(200).json({ hashdata, expiry, mobile,otp });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });

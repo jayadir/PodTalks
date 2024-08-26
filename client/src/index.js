@@ -11,10 +11,12 @@ import ProtectedRoute from "./components/userAuthPages/ProtectedRoutes/Protected
 import IntermediateProtectedRoute from "./components/userAuthPages/ProtectedRoutes/IntermediateProtectedRoute";
 import Activate from "./components/userAuthPages/Activation/Activate";
 import Dashboard from "./components/dashboard/Dashboard";
+import { store } from "./redux/store/store";
+import { Provider } from "react-redux";
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const user={
-  activated:false
-}
+const user = {
+  activated: false,
+};
 const BrowserRouter = createBrowserRouter([
   {
     path: "/",
@@ -33,22 +35,29 @@ const BrowserRouter = createBrowserRouter([
         ),
       },
       {
-        path:"/activate",
-        element: <IntermediateProtectedRoute isAuthenticated={false} user={user}>
-          <Activate/>
-        </IntermediateProtectedRoute>
-      },{
-        path:"/dashboard",
-        element: <ProtectedRoute isAuthenticated={true} user={user}>
-          <Dashboard/>
-        </ProtectedRoute>
-      }
+        path: "/activate",
+        element: (
+          <IntermediateProtectedRoute isAuthenticated={false} user={user}>
+            <Activate />
+          </IntermediateProtectedRoute>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <ProtectedRoute isAuthenticated={true} user={user}>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
 root.render(
   <React.StrictMode>
-    <RouterProvider router={BrowserRouter} />
+    <Provider store={store}>
+      <RouterProvider router={BrowserRouter} />
+    </Provider>
   </React.StrictMode>
 );
 

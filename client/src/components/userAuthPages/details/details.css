@@ -43,14 +43,14 @@
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 400px;
+    /* max-width: 400px; */
 }
 
 .inputGroup label {
     margin-right: 10px;
     font-weight: bold;
     color: white;
-    flex: 0 0 100px; /* Adjust the width as needed */
+    /* flex: 0 0 10px; Adjust the width as needed */
 }
 
 .inputGroup input {
@@ -58,7 +58,7 @@
     border: 1px solid white;
     border-radius: 3px;
     font-size: 14px;
-    width: calc(85% - 110px); 
+    width: 100%; 
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.2); 
     color: white;

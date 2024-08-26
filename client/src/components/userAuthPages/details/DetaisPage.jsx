@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import "./details.css";
 import Card from "../../card/Card";
-
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import {setOtp} from "../../../redux/slices/userSlice"
 export default function DetaisPage({ onNext }) {
   const [mode, setMode] = useState("mobile");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("Enter your mobile number");
-
+  const dispatch = useDispatch();
   const handleRadioChange = (event) => {
     const selectedMode = event.target.value;
     setMode(selectedMode);
@@ -18,13 +20,20 @@ export default function DetaisPage({ onNext }) {
         : "Enter your mobile number"
     );
   };
-  const handleNext = () => {
+  const handleNext = async () => {
     console.log(name,email)
     if(name==="" || (email==="" && number==="")){
       alert("fill all the fields")
       return
     }
-    //backend
+    //backend req
+    console.log("API URL:", process.env.REACT_APP_API_URL);
+
+    const res=await axios.post(process.env.REACT_APP_API_URL+"apiv1/sendotp",{
+      mobile:"+91"+number
+    })
+    const data=res.data
+    dispatch(setOtp({mobile:data.mobile,hash:data.hashdata}))
     onNext()
   }
   return (

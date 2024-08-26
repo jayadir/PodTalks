@@ -4,7 +4,7 @@ import UserNamePage from "./username/UserNamePage";
 import OtpPage from "./otp/OtpPage";
 import "./signup.css";
 function Signup() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const moveNext = () => {
     setStep(step + 1);
   };
