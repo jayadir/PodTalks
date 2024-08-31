@@ -16,6 +16,14 @@ const userSchema=new mongoose.Schema({
         type:String,
         // required:true
     },
-    // timestamps:true
-})
-module.exports=mongoose.model('User',userSchema);
+    username:{
+        type:String,
+        // required:true,
+        // unique:true
+        default:""
+    },
+    }
+,{timestamps:true})
+const User=mongoose.model('User',userSchema);
+// User.createIndexes({username:1})
+module.exports=User

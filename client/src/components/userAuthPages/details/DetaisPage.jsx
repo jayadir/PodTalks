@@ -3,7 +3,7 @@ import "./details.css";
 import Card from "../../card/Card";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import {setOtp} from "../../../redux/slices/userSlice"
+import {setOtp,setUser} from "../../../redux/slices/userSlice"
 export default function DetaisPage({ onNext }) {
   const [mode, setMode] = useState("mobile");
   const [number, setNumber] = useState("");
@@ -33,7 +33,9 @@ export default function DetaisPage({ onNext }) {
       mobile:"+91"+number
     })
     const data=res.data
-    dispatch(setOtp({mobile:data.mobile,hash:data.hashdata}))
+    console.log(data)
+    dispatch(setUser({name}))
+    dispatch(setOtp({mobile:data.mobile,hash:data.hashdata,expiry:data.expiry}))
     onNext()
   }
   return (

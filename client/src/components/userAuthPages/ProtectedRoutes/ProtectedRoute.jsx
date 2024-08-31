@@ -1,12 +1,16 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-
-export default function ProtectedRoute({ isAuthenticated, children,user }) {
+import { useSelector } from 'react-redux';
+export default function ProtectedRoute({  children }) {
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated)
+  const user = useSelector(state => state.user)
   if (!isAuthenticated) {
     return <Navigate to='/login' />
   }
-  else if (isAuthenticated && !user?.activated) {
-    return <Navigate to='/activate' />
+  else if (isAuthenticated && !user?.user.activated) {
+    // console.log('User:', user);
+    // console.log('User Activated:', user?.activated, typeof user?.activated);
+    return <Navigate to='/login' />;
   }
   else {
     return children

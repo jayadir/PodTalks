@@ -3,11 +3,15 @@ const express=require('express');
 const cors=require('cors');
 const router=require('./routes');
 const connect=require('./database/db');
+const cookieparser=require('cookie-parser');
 const app=express();
+app.use(cookieparser());
 app.use(cors({
-    origin:"*",
-    methods:"*",
-    allowedHeaders:"*",
+    origin:'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
+
+    allowedHeaders:["Content-Type","Authorization"],
+    credentials:true
     
 }));
 const port=process.env.PORT || 5000;
