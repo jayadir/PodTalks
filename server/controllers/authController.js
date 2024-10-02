@@ -135,13 +135,13 @@ exports.regenerateToken = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "no user found" });
     }
-    console.log(user);
+    // console.log(user);
     const { accessTkn:newAccessTkn, refreshTkn:newRefreshTkn } =
     
       await jwtServiceObj.generateAccessToken({
         _id: user._id,
       });
-      console.log(newAccessTkn,newRefreshTkn);
+      // console.log(newAccessTkn,newRefreshTkn);
     res.cookie("refreshTkn", newRefreshTkn, {
       httpOnly: true,
       // secure:true,
@@ -168,3 +168,14 @@ exports.regenerateToken = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.logout=async (req,res)=>{
+  try {
+    await refreshTknModel.findOneAndDelete({refreshToken:req.cookies.refreshTkn});
+    res.clearCookie("refreshTkn");
+    res.clearCookie("accessTkn");
+    res.status(200).json({message:"logout success"})
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
+}

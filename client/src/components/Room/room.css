@@ -1,0 +1,37 @@
+.room-card {
+  border: 1px solid #444;
+  /* border-radius: 8px; */
+  /* display: flex; */
+  /* align-items: center; */
+  justify-content: center;
+  padding: 5px; /* Reduced padding */
+  margin: 12px; /* Reduced margin */
+  background-color: #2c3e50; /* Dark background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #ecf0f1; /* Light text color for contrast */
+}
+
+.room-title {
+  font-size: 20px; /* Reduced font size */
+  margin-bottom: 8px;
+}
+
+.room-speakers {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.speaker {
+  background-color: #3498db;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.room-participants {
+  font-size: 14px; /* Reduced font size */
+  color: #bdc3c7; /* Light text color for contrast */
+}

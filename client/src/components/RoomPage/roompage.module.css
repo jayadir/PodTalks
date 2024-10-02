@@ -1,0 +1,106 @@
+.roomPage {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .leftSide {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .micImage {
+    width: 50%;
+    height: auto;
+  }
+  
+  .rightSide {
+    flex: 1;
+    padding: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: #252222;
+  }
+  
+  .backButton {
+    background-color: #252222;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .roomTitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .participants {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .participant {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .userAvatar {
+    background-color: #7b6c6c;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: relative; 
+  }
+  .raiseHandButton {
+    position: absolute;
+    right: -100px;
+    top: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    /* display: none;  */
+    opacity: 0.9;
+    z-index: 1;
+  }
+  .speaking {
+    animation: pulse 1s infinite;
+  }
+  .mic {
+    position: absolute;
+    bottom: 13px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 15px;
+    /* background-color: #eecece; */
+  }
+  
+  .muteimg {
+    width: 100%;
+    height: 100%;
+  }
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 20px 20px rgba(0, 255, 0, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+    }
+  }
+  

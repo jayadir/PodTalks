@@ -5,6 +5,7 @@ export default function ProtectedRoute({  children }) {
   const isAuthenticated = useSelector(state => state.user.isAuthenticated)
   const user = useSelector(state => state.user)
   if (!isAuthenticated) {
+    console.log("login")
     return <Navigate to='/login' />
   }
   else if (isAuthenticated && !user?.user.activated) {
@@ -13,6 +14,7 @@ export default function ProtectedRoute({  children }) {
     return <Navigate to='/login' />;
   }
   else {
+    console.log("childre")
     return children
   }
 }

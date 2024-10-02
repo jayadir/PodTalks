@@ -1,0 +1,13 @@
+1)create new RTCPeerConnection()
+2)create a Data channel
+3)add onopen,onmessage event listener to datachannel
+4)add onicecandidate event listener on peerconnection 
+5)create an offer using peerconnection
+6)set the created offer into local description
+7)send this offer to other browser
+8)create rtc connection in other browser and add onicecandidate
+9)set remote description on other browser
+10)add on data channel even listner
+11)create answer 
+12)set local description of answer
+13)set the answer of 2nd browser as remote description in 1st browser

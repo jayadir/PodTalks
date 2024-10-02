@@ -3,9 +3,9 @@ const { TokenExpiredError } = require('jsonwebtoken');
 exports.verifyReq = async (req, res, next) => {
   try {
     const { accessTkn,refreshTkn } = req.cookies;
-    // console.log(accessTkn);
+    console.log(accessTkn);
     if(!accessTkn){
-      return res.status(401).json({message:"Unauthorized"})
+      return res.status(401).json({message:"Unauthorized ACCESS"})
     }
     const decoded=await jwtServiceObj.verifyToken(accessTkn)
     console.log(decoded)

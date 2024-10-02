@@ -13,14 +13,16 @@ const userSlice=createSlice({
     },
     reducers:{
         setUser:(state,action)=>{
-            if(Object.keys(state.user).length!==0){
-                state.isAuthenticated=true;
-            }
+            // if(Object.keys(state.user).length!==0){
+            //     state.isAuthenticated=true;
+            // }
             const user=action.payload;
             console.log(user)
             const newData={...state.user,...user};
             state.user=newData;
-            
+        },
+        setAuthenticated:(state,action)=>{
+            state.isAuthenticated=action.payload;
         },
         setOtp:(state,action)=>{
             const {mobile,hash,expiry}=action.payload
@@ -34,9 +36,18 @@ const userSlice=createSlice({
               }
               state.user.activated=true
             state.user.username=action.payload;
+        },
+        logout(state,action){
+            state.isAuthenticated=false;
+            state.user={};
+            state.otp={
+                mobile:"",
+                hashdata:"",
+                expiry:""
+            }
         }
     }
 })
 
-export const {setUser,setOtp,setUsername}=userSlice.actions;
+export const {setUser,setOtp,setUsername,setAuthenticated,logout}=userSlice.actions;
 export default userSlice.reducer;

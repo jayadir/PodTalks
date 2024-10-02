@@ -3,7 +3,7 @@ const jwtaccess = process.env.JWT_ACCESS_SECRET_STRING;
 const jwtrefresh = process.env.JWT_REFRESH_SECRET_STRING;
 class jwtService {
   async generateAccessToken(payload) {
-    const accessTkn = jwt.sign(payload, jwtaccess, { expiresIn: "10s" });
+    const accessTkn = jwt.sign(payload, jwtaccess, { expiresIn: "1h" });
     const refreshTkn = jwt.sign(payload, jwtrefresh, { expiresIn: "1y" });
     return { accessTkn, refreshTkn };
   }

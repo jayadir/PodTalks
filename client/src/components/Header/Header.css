@@ -1,8 +1,61 @@
-.nav{
-    padding: 0;
-    width: 100vw;
+nav {
+    padding: 7px;
+    width: 100%;
     display: flex;
+    flex-direction: row; /* Align items horizontally */
     justify-content: space-between;
+    align-items: center;
     margin-top: 10px;
     margin-bottom: 10px;
-}
+    background-color: #333; /* Optional: Add a background color for better visibility */
+  }
+  
+  .logo {
+    text-decoration: none;
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .logout {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Add margin to the right for spacing */
+  }
+  
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .username {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .logout-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .logout-button:hover {
+    background-color: #c0392b;
+  }

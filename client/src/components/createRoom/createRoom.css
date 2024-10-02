@@ -1,0 +1,51 @@
+.create-room-card {
+    background-color: #2c3e50; /* Dark background color */
+    color: #ecf0f1; /* Light text color for contrast */
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Limit the max width of the card */
+    position: relative; /* For positioning the close button */
+  }
+  
+  .create-room-button {
+    background-color: rgba(255, 255, 255, 0.7); /* Light translucent grey */
+    color: #2c3e50; /* Dark text color for contrast */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px;
+  }
+  
+  .create-room-button:hover {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly less translucent on hover */
+  }
+  
+  .translucent-input {
+    background-color: rgba(255, 255, 255, 0.2); /* Translucent input background */
+    color: #ecf0f1; /* Light text color for contrast */
+    border: 1px solid #ccc;
+  }
+  
+  .translucent-input::placeholder {
+    color: #bdc3c7; /* Light placeholder text color */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    color: #bdc3c7;
+  }

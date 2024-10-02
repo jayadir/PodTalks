@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Card from "../../card/Card";
 import "./username.css";
-import { setUsername } from "../../../redux/slices/userSlice";
+import { setUsername,setAuthenticated } from "../../../redux/slices/userSlice";
 import {useDispatch,useSelector} from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ const handleNext=async ()=>{
   console.log(res)
   if(res.status===200){
     dispatch(setUsername(username))
+    dispatch(setAuthenticated(true))
     // onNext()
     navigate("/dashboard")
   }
