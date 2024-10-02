@@ -3,22 +3,34 @@ import { useStateCallback } from "./useStateCallback";
 import socket from "../sockets";
 import freeice from "freeice";
 
-const clients = [
-  {
-    id: 1,
-    username: "John Doe",
-  },
-];
+// const clients = [
+//   {
+//     id: 1,
+//     username: "John Doe",
+//   },
+// ];
 
 export const useConnections = (roomId, user) => {
-  const [connections, setConnections] = useStateCallback(clients);
+  const [connections, setConnections] = useStateCallback([]);
   const audioMap = useRef({});
   const localStream = useRef(null);
   const availableConnections = useRef({});
   const socRef = useRef(null);
-  const handleMute=(isMuted,user)=>{
-    localStream.current.getTracks()[0].enabled = !isMuted;
-  }
+  const participantRef = useRef(connections);
+  const handleMute = (isMuted, user) => {
+    let interval = setInterval(() => {
+      if (localStream.current) {
+        localStream.current.getTracks()[0].enabled = !isMuted;
+        if(isMuted){
+          socRef.current.emit("user-muted", { roomId, user });
+        }
+        else{
+          socRef.current.emit("user-unmuted", { roomId, user });
+        }
+        clearInterval(interval);
+      }
+    }, 500);
+  };
   const provideRef = (instance, id) => {
     audioMap.current[id] = instance;
   };
@@ -26,25 +38,23 @@ export const useConnections = (roomId, user) => {
   const addConnection = useCallback(
     (client, callback) => {
       console.log(connections);
-      
+
       setConnections((prev) => {
         const connectionExists = prev.some(
           (connection) => connection._id === client._id
         );
-  
+
         console.log("Adding connection:", client, "Exists:", connectionExists);
-  
-        if (connectionExists) return prev; 
-  
-       
+
+        if (connectionExists) return prev;
+
         const newConnections = [...prev, client];
         console.log("New connections state:", newConnections);
-        return newConnections; 
+        return newConnections;
       }, callback);
     },
-    [setConnections] 
+    [setConnections]
   );
-  
 
   useEffect(() => {
     socRef.current = socket();
@@ -58,7 +68,7 @@ export const useConnections = (roomId, user) => {
     }
 
     captureAudio().then(() => {
-      addConnection({...user,isMuted:true}, () => {
+      addConnection({ ...user, isMuted: true }, () => {
         const localAudio = audioMap.current[user.id];
         if (!localAudio) return;
         localAudio.volume = 0;
@@ -78,60 +88,67 @@ export const useConnections = (roomId, user) => {
   }, [addConnection, user, roomId]);
 
   useEffect(() => {
-    socRef.current.on("user-connected", async ({socketId, user, createOffer}) => {
-      console.log("User connected:", user);
-      console.log("Socket ID:", socketId);
+    socRef.current.on(
+      "user-connected",
+      async ({ socketId, user, createOffer }) => {
+        console.log("User connected:", user);
+        console.log("Socket ID:", socketId);
 
-      if (socketId in availableConnections.current) {console.log("User already connected:", user);};
-      availableConnections.current[socketId] = new RTCPeerConnection({
-        iceServers: freeice(),
-      });
-
-      availableConnections.current[socketId].onicecandidate = (e) => {
-        if (e.candidate) {
-          socRef.current.emit("ice_info", {
-            roomId,
-            socketId,
-            ice: e.candidate,
-          });
+        if (socketId in availableConnections.current) {
+          console.log("User already connected:", user);
         }
-      };
-
-      availableConnections.current[socketId].ontrack = (e) => {
-        addConnection({...user,isMuted:true}, () => {
-          const remoteAudio = audioMap.current[user.id];
-          if (remoteAudio) {
-            remoteAudio.srcObject = e.streams[0];
-          } else {
-            const interval = setInterval(() => {
-              const remoteAudio = audioMap.current[user.id];
-              if (remoteAudio) {
-                remoteAudio.srcObject = e.streams[0];
-                clearInterval(interval);
-              }
-            }, 1000);
-          }
+        availableConnections.current[socketId] = new RTCPeerConnection({
+          iceServers: freeice(),
         });
-      };
 
-      // Send local stream to others
-      localStream.current.getTracks().forEach((track) => {
-        availableConnections.current[socketId].addTrack(
-          track,
-          localStream.current
-        );
-      });
+        availableConnections.current[socketId].onicecandidate = (e) => {
+          if (e.candidate) {
+            socRef.current.emit("ice_info", {
+              roomId,
+              socketId,
+              ice: e.candidate,
+            });
+          }
+        };
 
-      // Create offer if the parameter is true
-      if (createOffer) {
-        const offer = await availableConnections.current[
-          socketId
-        ].createOffer();
-        await availableConnections.current[socketId].setLocalDescription(offer);
-        // Send it to other user
-        socRef.current.emit("send_offer", { roomId, socketId, offer });
+        availableConnections.current[socketId].ontrack = (e) => {
+          addConnection({ ...user, isMuted: true }, () => {
+            const remoteAudio = audioMap.current[user.id];
+            if (remoteAudio) {
+              remoteAudio.srcObject = e.streams[0];
+            } else {
+              const interval = setInterval(() => {
+                const remoteAudio = audioMap.current[user.id];
+                if (remoteAudio) {
+                  remoteAudio.srcObject = e.streams[0];
+                  clearInterval(interval);
+                }
+              }, 1000);
+            }
+          });
+        };
+
+        // Send local stream to others
+        localStream.current.getTracks().forEach((track) => {
+          availableConnections.current[socketId].addTrack(
+            track,
+            localStream.current
+          );
+        });
+
+        // Create offer if the parameter is true
+        if (createOffer) {
+          const offer = await availableConnections.current[
+            socketId
+          ].createOffer();
+          await availableConnections.current[socketId].setLocalDescription(
+            offer
+          );
+          // Send it to other user
+          socRef.current.emit("send_offer", { roomId, socketId, offer });
+        }
       }
-    });
+    );
 
     return () => {
       socRef.current.off("user-connected");
@@ -201,6 +218,26 @@ export const useConnections = (roomId, user) => {
   useEffect(() => {
     console.log("Connections state changed:", connections);
   }, [connections]);
-
-  return { connections, provideRef,handleMute };
+  useEffect(()=>{
+    participantRef.current = connections
+  },[connections])
+  useEffect(()=>{
+    socRef.current.on("user-muted",({socketId,user})=>{
+      participantRef.current.forEach((participant)=>{
+        if(participant._id === user._id){
+          participant.isMuted = true
+          setConnections(JSON.parse(JSON.stringify(participantRef.current)))
+        }
+      })
+    })
+    socRef.current.on("user-unmuted",({socketId,user})=>{
+      participantRef.current.forEach((participant)=>{
+        if(participant._id === user._id){
+          participant.isMuted = false
+          setConnections(JSON.parse(JSON.stringify(participantRef.current)))
+        }
+      })
+    })
+  },[participantRef])
+  return { connections, provideRef, handleMute };
 };

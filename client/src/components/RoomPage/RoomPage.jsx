@@ -19,6 +19,10 @@ export default function RoomPage() {
   const handleGoBack = () => {
     navigate("/dashboard");
   };
+  const handleChangeMute=(userId)=>{
+    if(userId!==user._id) return
+    setIsMuted(prev=>!prev)
+  }
   useEffect(()=>{
     handleMute(isMuted,user)
   },[isMuted])
@@ -95,12 +99,12 @@ export default function RoomPage() {
               ></audio>
               <div className={style.userAvatar}>
                 <strong>{participant.username.charAt(0)}</strong>
-                <div className={style.mic}>
-                  <img
+                <div className={style.mic} onClick={()=>handleChangeMute(participant._id)}>
+                  {participant.isMuted?(<img
                     src="/images/mute.png"
                     className={style.muteimg}
                     alt="mute"
-                  />
+                  />):(<img src="/images/unmute.png" className={style.muteimg} alt="unmute" />)}
                 </div>
               </div>
               {participant.name || participant.username}

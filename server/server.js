@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
 
     participantsList.forEach((participant) => {
       if (participant != socket.id) {
-        console.log("socket",socket.id)
+        console.log("socket", socket.id);
         io.to(participant).emit("user-connected", {
           socketId: socket.id,
           user,
@@ -89,6 +89,19 @@ io.on("connection", (socket) => {
     delete socketMap[socket.id];
   });
   // socket.on("disconnecting") yet to execute it
+  socket.on("user-muted", ({ roomId, user }) => {
+    const participants = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
+    participants.forEach((participant) => {
+      io.to(participant).emit("user-muted", { socketId: socket.id, user });
+    });
+  });
+
+  socket.on("user-unmuted", ({ roomId, user }) => {
+    const participants = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
+    participants.forEach((participant) => {
+      io.to(participant).emit("user-unmuted", { socketId: socket.id, user });
+    });
+  });
 });
 
 server.listen(port, () => {
