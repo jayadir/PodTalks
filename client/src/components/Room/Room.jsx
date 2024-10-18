@@ -13,9 +13,9 @@ export default function Room({ details }) {
             </div>
           ))}
         </div>
-        <div className="room-participants">
+        {/* <div className="room-participants">
           Participants: {details.totalParticipants}
-        </div>
+        </div> */}
       </div>
     </div>
   );

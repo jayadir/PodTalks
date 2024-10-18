@@ -14,7 +14,7 @@ export default function ProtectedRoute({  children }) {
     return <Navigate to='/login' />;
   }
   else {
-    console.log("childre")
+    console.log("children")
     return children
   }
 }

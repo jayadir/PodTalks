@@ -15,36 +15,40 @@ import axios from "axios";
 import { store } from "./redux/store/store";
 import { Provider } from "react-redux";
 import RoomPage from "./components/RoomPage/RoomPage";
-// axios.interceptors.response.use(
-//   (res) => {
-//     return res;
-//   },
-//   async (error) => {
-//     const prev = error.config;
-//     if (
-//       error.response.status === 401 &&
-//       error.config &&
-//       !error.config._isRetryRequest
-//     ) {
-//       error.config._isRetryRequest = true;
-//       try {
-//         console.log("refreshing token");
-//         const res = await axios.get(
-//           process.env.REACT_APP_API_URL + "apiv1/refreshTokens",
-//           {
-//             withCredentials: true,
-//           }
-//         );
-//         return axios.request(prev);
-//       } catch (error) {
-//         console.log("error", error);
-//       }
-//     }
-//     else{
-//       throw error
-//     }
-//   }
-// );
+axios.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  async (error) => {
+    const prev = error.config;
+    if (
+      error.response.status === 401 &&
+      prev &&
+      !prev._isRetryRequest
+    ) {
+      prev._isRetryRequest = true;
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}apiv1/refreshTokens`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (res.status === 200) {
+          return axios.request(prev);
+        } else {
+          throw new Error("Token refresh failed");
+        }
+      } catch (err) {
+        console.error("Error refreshing token", err);
+      }
+    } else {
+      throw error;
+    }
+  }
+);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const user = {
   activated: false,

@@ -41,24 +41,6 @@ export default function RoomPage() {
     }
     fetchData();
   }, [roomId]);
-  // Handle audio stream analysis
-  const detectSpeaking = (instance, participantId) => {
-    // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    // const analyser = audioContext.createAnalyser();
-    // const source = audioContext.createMediaElementSource(instance);
-    // source.connect(analyser);
-    // analyser.connect(audioContext.destination);
-    // analyser.fftSize = 256;
-    // const bufferLength = analyser.frequencyBinCount;
-    // const dataArray = new Uint8Array(bufferLength);
-    // const checkAudio = () => {
-    //   analyser.getByteFrequencyData(dataArray);
-    //   const volume = dataArray.reduce((a, b) => a + b) / bufferLength;
-    //   setSpeaking((prev) => ({ ...prev, [participantId]: volume > 50 }));
-    //   requestAnimationFrame(checkAudio);
-    // };
-    // checkAudio();
-  };
 
   return (
     <div className={style.roomPage}>

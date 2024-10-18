@@ -15,8 +15,8 @@ const Header = () => {
 
   return (
     <nav>
-      <Link to="/" className="logo">
-        Logo
+      <Link to="/" className="logo mx-2">
+        PodTalks
       </Link>
       <div className="logout">
         {isAuthenticated && (
